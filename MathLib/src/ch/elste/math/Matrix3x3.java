@@ -21,7 +21,7 @@ public class Matrix3x3 {
 	 *             if {@code values.length} is not equal to 9
 	 */
 	public Matrix3x3(double[] values) {
-		if (values.length != 9)
+		if (values.length != this.values.length)
 			throw new IllegalArgumentException("There have to be 9 values!");
 
 		this.values = values;
@@ -57,7 +57,7 @@ public class Matrix3x3 {
 	 * 
 	 * @return a new matrix
 	 */
-	public static Matrix3x3 fromVerticalVectors(Vector v1, Vector v2, Vector v3) {
+	public static Matrix3x3 fromVerticalVectors(Vector3 v1, Vector3 v2, Vector3 v3) {
 		double[] temp = { 
 				v1.x, v2.x, v3.x, 
 				v1.y, v2.y, v3.y, 
@@ -66,8 +66,8 @@ public class Matrix3x3 {
 	}
 
 	/**
-	 * Adds {@code m} to this matrix and returns a new independent matrix object
-	 * with given values.
+	 * Adds {@code m} to this matrix without changing it and returns a new independent matrix object
+	 * with the resulting values.
 	 * 
 	 * @param m
 	 *            the matrix to add
@@ -75,10 +75,13 @@ public class Matrix3x3 {
 	 * @return a new independent matrix object with resulting values
 	 */
 	public Matrix3x3 add(Matrix3x3 m) {
-		for (int i = 0; i < values.length; i++) {
-			values[i] += m.values[i];
+		double[] temp = Arrays.copyOf(values, values.length);
+		
+		for (int i = 0; i < temp.length; i++) {
+			temp[i] += m.values[i];
 		}
-		return new Matrix3x3(values);
+		
+		return new Matrix3x3(temp);
 	}
 
 	/**
@@ -92,9 +95,9 @@ public class Matrix3x3 {
 	 * @return a new independent matrix
 	 */
 	public static Matrix3x3 add(Matrix3x3 m1, Matrix3x3 m2) {
-		double[] temp = new double[9];
+		double[] temp = new double[m1.values.length];
 
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < temp.length; i++) {
 			temp[i] = m1.values[i] + m2.values[i];
 		}
 
@@ -102,7 +105,7 @@ public class Matrix3x3 {
 	}
 
 	/**
-	 * Scales this matrix by {@code d}.
+	 * Returns a scaled version of this matrix without changing it.
 	 * 
 	 * @param d
 	 *            the factor to scale with
@@ -110,11 +113,13 @@ public class Matrix3x3 {
 	 * @return a new independent matrix
 	 */
 	public Matrix3x3 scale(double d) {
-		for (int i = 0; i < 9; i++) {
-			values[i] *= d;
+		double[] temp = Arrays.copyOf(values, values.length);
+		
+		for (int i = 0; i < temp.length; i++) {
+			temp[i] *= d;
 		}
 
-		return new Matrix3x3(values);
+		return new Matrix3x3(temp);
 	}
 
 	/**
@@ -128,9 +133,9 @@ public class Matrix3x3 {
 	 * @return a new independent matrix
 	 */
 	public static Matrix3x3 scale(Matrix3x3 m, double d) {
-		double[] temp = new double[9];
+		double[] temp = new double[m.values.length];
 
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < temp.length; i++) {
 			temp[i] = m.values[i] * d;
 		}
 
@@ -138,8 +143,7 @@ public class Matrix3x3 {
 	}
 
 	/**
-	 * Multiplies {@code this} with {@code m}. The values of this matrix are set to
-	 * the new value.
+	 * Multiplies {@code this} with {@code m}. The values of this matrix are not changed.
 	 * 
 	 * @param m
 	 *            the matrix to multiply
@@ -147,17 +151,16 @@ public class Matrix3x3 {
 	 * @return a new independent matrix
 	 */
 	public Matrix3x3 mult(Matrix3x3 m) {
-		double[] temp = new double[9];
-		Vector[] thisVecs = Vector.getHorizontalVectors(this);
-		Vector[] mVecs = Vector.getVerticalVectors(m);
+		double[] temp = new double[values.length];
+		Vector3[] thisVecs = Vector3.getHorizontalVectors(this);
+		Vector3[] mVecs = Vector3.getVerticalVectors(m);
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				temp[i * 3 + j] = Vector.dot(thisVecs[i], mVecs[j]);
+				temp[i * 3 + j] = Vector3.dot(thisVecs[i], mVecs[j]);
 			}
 		}
 
-		values = temp;
 		return new Matrix3x3(temp);
 	}
 
@@ -173,12 +176,12 @@ public class Matrix3x3 {
 	 */
 	public static Matrix3x3 mult(Matrix3x3 m1, Matrix3x3 m2) {
 		double[] temp = new double[9];
-		Vector[] m1Vecs = Vector.getHorizontalVectors(m1);
-		Vector[] m2Vecs = Vector.getVerticalVectors(m2);
+		Vector3[] m1Vecs = Vector3.getHorizontalVectors(m1);
+		Vector3[] m2Vecs = Vector3.getVerticalVectors(m2);
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				temp[i * 3 + j] = Vector.dot(m1Vecs[i], m2Vecs[j]);
+				temp[i * 3 + j] = Vector3.dot(m1Vecs[i], m2Vecs[j]);
 			}
 		}
 
@@ -194,9 +197,9 @@ public class Matrix3x3 {
 	 * 
 	 * @return the resulting vector
 	 */
-	public Vector mult(Vector v) {
-		Vector res = new Vector();
-		Vector[] temp = Vector.getHorizontalVectors(this);
+	public Vector3 mult(Vector3 v) {
+		Vector3 res = new Vector3();
+		Vector3[] temp = Vector3.getHorizontalVectors(this);
 		res.x = temp[0].dot(v);
 		res.y = temp[1].dot(v);
 		res.z = temp[2].dot(v);
@@ -215,9 +218,9 @@ public class Matrix3x3 {
 	 * 
 	 * @return the resulting vector
 	 */
-	public static Vector mult(Matrix3x3 m, Vector v) {
-		Vector res = new Vector();
-		Vector[] temp = Vector.getHorizontalVectors(m);
+	public static Vector3 mult(Matrix3x3 m, Vector3 v) {
+		Vector3 res = new Vector3();
+		Vector3[] temp = Vector3.getHorizontalVectors(m);
 		res.x = temp[0].dot(v);
 		res.y = temp[1].dot(v);
 		res.z = temp[2].dot(v);

@@ -1,15 +1,15 @@
 package ch.elste.math;
 
 /**
- * A vector is a mathematical construct holding 3 coordinates. This class holds
- * all the essential operations.
+ * A vector is a mathematical construct holding multiple numbers. This class holds
+ * all the essential operations for a 3 by 1 Vector.
  * 
  * @author Dillon Elste
  */
-public class Vector {
-	public static final Vector X = new Vector(1, 0, 0);
-	public static final Vector Y = new Vector(0, 1, 0);
-	public static final Vector Z = new Vector(0, 0, 1);
+public class Vector3 {
+	public static final Vector3 X = new Vector3(1, 0, 0);
+	public static final Vector3 Y = new Vector3(0, 1, 0);
+	public static final Vector3 Z = new Vector3(0, 0, 1);
 
 	public double x, y, z;
 
@@ -19,7 +19,7 @@ public class Vector {
 	 * @param v
 	 *            the vector to copy
 	 */
-	public Vector(Vector v) {
+	public Vector3(Vector3 v) {
 		x = v.x;
 		y = v.y;
 		z = v.z;
@@ -35,7 +35,7 @@ public class Vector {
 	 * @param z
 	 *            the z-coordinate
 	 */
-	public Vector(double x, double y, double z) {
+	public Vector3(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -51,7 +51,7 @@ public class Vector {
 	 * @param d
 	 *            the coordinates
 	 */
-	public Vector(double d) {
+	public Vector3(double d) {
 		this(d, d, d);
 	}
 
@@ -62,7 +62,7 @@ public class Vector {
 	 * 0)}.
 	 * </p>
 	 */
-	public Vector() {
+	public Vector3() {
 		this(0d, 0d, 0d);
 	}
 
@@ -75,8 +75,8 @@ public class Vector {
 	 * 
 	 * @return an independent vector with the resulting values.
 	 */
-	public Vector plus(final Vector v) {
-		return new Vector(x + v.x, y + v.y, z + v.z);
+	public Vector3 plus(final Vector3 v) {
+		return new Vector3(x + v.x, y + v.y, z + v.z);
 	}
 
 	/**
@@ -89,8 +89,8 @@ public class Vector {
 	 * 
 	 * @return a new vector with the resulting values
 	 */
-	public static Vector add(final Vector v1, final Vector v2) {
-		return new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+	public static Vector3 add(final Vector3 v1, final Vector3 v2) {
+		return new Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
 	}
 
 	/**
@@ -102,8 +102,8 @@ public class Vector {
 	 * 
 	 * @return an independent vector with the resulting values.
 	 */
-	public Vector minus(final Vector v) {
-		return new Vector(x - v.x, y - v.y, z - v.z);
+	public Vector3 minus(final Vector3 v) {
+		return new Vector3(x - v.x, y - v.y, z - v.z);
 	}
 
 	/**
@@ -116,8 +116,8 @@ public class Vector {
 	 * 
 	 * @return a new vector with the resulting values
 	 */
-	public static Vector subtract(final Vector v1, final Vector v2) {
-		return new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+	public static Vector3 subtract(final Vector3 v1, final Vector3 v2) {
+		return new Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
 	}
 
 	/**
@@ -125,8 +125,8 @@ public class Vector {
 	 * 
 	 * @return -this
 	 */
-	public Vector negative() {
-		return new Vector(-x, -y, -z);
+	public Vector3 negative() {
+		return new Vector3(-x, -y, -z);
 	}
 
 	/**
@@ -137,8 +137,8 @@ public class Vector {
 	 * 
 	 * @return -v
 	 */
-	public static Vector negate(final Vector v) {
-		return new Vector(-v.x, -v.y, -v.z);
+	public static Vector3 negate(final Vector3 v) {
+		return new Vector3(-v.x, -v.y, -v.z);
 	}
 
 	/**
@@ -149,8 +149,8 @@ public class Vector {
 	 * 
 	 * @return a new independent vector with resulting values
 	 */
-	public Vector scale(final double factor) {
-		return new Vector(x * factor, y * factor, z * factor);
+	public Vector3 scale(final double factor) {
+		return new Vector3(x * factor, y * factor, z * factor);
 	}
 
 	/**
@@ -163,8 +163,8 @@ public class Vector {
 	 * 
 	 * @return a new independent vector
 	 */
-	public static Vector scale(final Vector v, final double factor) {
-		return new Vector(v.x * factor, v.y * factor, v.z * factor);
+	public static Vector3 scale(final Vector3 v, final double factor) {
+		return new Vector3(v.x * factor, v.y * factor, v.z * factor);
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class Vector {
 	 * 
 	 * @return the dot product as a double
 	 */
-	public double dot(final Vector v) {
+	public double dot(final Vector3 v) {
 		return x * v.x + y * v.y + z * v.z;
 	}
 
@@ -189,7 +189,7 @@ public class Vector {
 	 * 
 	 * @return the dot product as a double
 	 */
-	public static double dot(final Vector v1, final Vector v2) {
+	public static double dot(final Vector3 v1, final Vector3 v2) {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 	}
 
@@ -201,8 +201,8 @@ public class Vector {
 	 * 
 	 * @return a new vector with resulting values
 	 */
-	public Vector cross(final Vector v) {
-		return new Vector(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
+	public Vector3 cross(final Vector3 v) {
+		return new Vector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 	}
 
 	/**
@@ -215,8 +215,8 @@ public class Vector {
 	 * 
 	 * @return a new vector with resulting values
 	 */
-	public static Vector cross(final Vector v1, final Vector v2) {
-		return new Vector(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
+	public static Vector3 cross(final Vector3 v1, final Vector3 v2) {
+		return new Vector3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
 	}
 
 	/**
@@ -234,9 +234,9 @@ public class Vector {
 	 * 
 	 * @return a new independent vector with resulting values
 	 */
-	public Vector normalize() {
+	public Vector3 normalize() {
 		double length = length();
-		return new Vector(x / length, y / length, z / length);
+		return new Vector3(x / length, y / length, z / length);
 	}
 
 	/**
@@ -247,9 +247,9 @@ public class Vector {
 	 * 
 	 * @return a new normalized vector without altering v
 	 */
-	public static Vector getNormalized(final Vector v) {
+	public static Vector3 getNormalized(final Vector3 v) {
 		double length = v.length();
-		return new Vector(v.x / length, v.y / length, v.z / length);
+		return new Vector3(v.x / length, v.y / length, v.z / length);
 	}
 
 	@Override
@@ -265,11 +265,11 @@ public class Vector {
 	 * 
 	 * @return the three horizontal vectors
 	 */
-	public static Vector[] getHorizontalVectors(final Matrix3x3 m) {
-		Vector[] temp = new Vector[3];
+	public static Vector3[] getHorizontalVectors(final Matrix3x3 m) {
+		Vector3[] temp = new Vector3[3];
 
 		for (int i = 0; i < 3; i++) {
-			temp[i] = new Vector(m.values[i * 3], m.values[i * 3 + 1], m.values[i * 3 + 2]);
+			temp[i] = new Vector3(m.values[i * 3], m.values[i * 3 + 1], m.values[i * 3 + 2]);
 		}
 
 		return temp;
@@ -283,11 +283,11 @@ public class Vector {
 	 * 
 	 * @return the three vertical vectors
 	 */
-	public static Vector[] getVerticalVectors(final Matrix3x3 m) {
-		Vector[] temp = new Vector[3];
+	public static Vector3[] getVerticalVectors(final Matrix3x3 m) {
+		Vector3[] temp = new Vector3[3];
 
 		for (int i = 0; i < 3; i++) {
-			temp[i] = new Vector(m.values[i], m.values[3 + i], m.values[6 + i]);
+			temp[i] = new Vector3(m.values[i], m.values[3 + i], m.values[6 + i]);
 		}
 
 		return temp;
