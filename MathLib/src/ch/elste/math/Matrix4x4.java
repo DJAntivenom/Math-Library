@@ -9,6 +9,8 @@ import java.util.Arrays;
  * @author Dillon Elste
  */
 public class Matrix4x4 {
+	public static final Matrix4x4 E = new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+
 	public double[] values = new double[16];
 
 	/**
@@ -18,7 +20,7 @@ public class Matrix4x4 {
 	 * 
 	 * @throws IllegalArgumentException if {@code values.length} is not equal to 16
 	 */
-	public Matrix4x4(double[] values) {
+	public Matrix4x4(double... values) {
 		if (values.length != this.values.length)
 			throw new IllegalArgumentException("There have to be 9 values!");
 
@@ -45,26 +47,19 @@ public class Matrix4x4 {
 	/**
 	 * Creates a new matrix with given columns.
 	 * 
-	 * @param v1
-	 *            the first vector
-	 * @param v2
-	 *            the second vector
-	 * @param v3
-	 *            the third vector
-	 * @param v4 
-	 * 			  the fourth vector
+	 * @param v1 the first vector
+	 * @param v2 the second vector
+	 * @param v3 the third vector
+	 * @param v4 the fourth vector
 	 * 
 	 * @return a new matrix
 	 */
 	public static Matrix4x4 fromVerticalVectors(Vector4 v1, Vector4 v2, Vector4 v3, Vector4 v4) {
-		double[] temp = { 
-				v1.x, v2.x, v3.x, v4.x,
-				v1.y, v2.y, v3.y, v4.y,
-				v1.z, v2.z, v3.z, v4.z,
-				v1.t, v2.t, v3.t, v4.t };
+		double[] temp = { v1.x, v2.x, v3.x, v4.x, v1.y, v2.y, v3.y, v4.y, v1.z, v2.z, v3.z, v4.z, v1.t, v2.t, v3.t,
+				v4.t };
 		return new Matrix4x4(temp);
 	}
-	
+
 	/**
 	 * Adds {@code m} to this matrix without changing them and returns a new
 	 * independent matrix object with given values.
@@ -259,8 +254,8 @@ public class Matrix4x4 {
 		return String.format(
 				"Matrix:@%s%n" + "%5.3f\t%5.3f\t%5.3f\t%5.3f%n" + "%5.3f\t%5.3f\t%5.3f\t%5.3f%n"
 						+ "%5.3f\t%5.3f\t%5.3f\t%5.3f%n" + "%5.3f\t%5.3f\t%5.3f\t%5.3f%n",
-				Integer.toHexString(hashCode()), values[0], values[1], values[2], values[3], values[4], values[5], values[6],
-				values[7], values[8], values[9], values[10], values[11], values[12], values[13], values[14],
+				Integer.toHexString(hashCode()), values[0], values[1], values[2], values[3], values[4], values[5],
+				values[6], values[7], values[8], values[9], values[10], values[11], values[12], values[13], values[14],
 				values[15]);
 	}
 }
