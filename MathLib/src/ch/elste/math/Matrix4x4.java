@@ -8,10 +8,11 @@ import java.util.Arrays;
  * 
  * @author Dillon Elste
  */
-public class Matrix4x4 {
-	public static final Matrix4x4 E = new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-
-	public double[] values = new double[16];
+public class Matrix4x4 extends Matrix {
+	/**
+	 * The identity matrix given by {@link Matrix#diag(int, double...) diag(4, 1)}.
+	 */
+	public static final Matrix4x4 I = new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
 	/**
 	 * Creates a new matrix with given values.
@@ -21,6 +22,7 @@ public class Matrix4x4 {
 	 * @throws IllegalArgumentException if {@code values.length} is not equal to 16
 	 */
 	public Matrix4x4(double... values) {
+		this();
 		if (values.length != this.values.length)
 			throw new IllegalArgumentException("There have to be 9 values!");
 
@@ -33,6 +35,7 @@ public class Matrix4x4 {
 	 * @param d the value of all components
 	 */
 	public Matrix4x4(double d) {
+		this();
 		Arrays.fill(values, d);
 	}
 
@@ -42,22 +45,7 @@ public class Matrix4x4 {
 	 * This is equal to calling {@link #Matrix4x4(double) new Matrix4x4(0)}.
 	 */
 	public Matrix4x4() {
-	}
-
-	/**
-	 * Creates a new matrix with given columns.
-	 * 
-	 * @param v1 the first vector
-	 * @param v2 the second vector
-	 * @param v3 the third vector
-	 * @param v4 the fourth vector
-	 * 
-	 * @return a new matrix
-	 */
-	public static Matrix4x4 fromVerticalVectors(Vector4 v1, Vector4 v2, Vector4 v3, Vector4 v4) {
-		double[] temp = { v1.x, v2.x, v3.x, v4.x, v1.y, v2.y, v3.y, v4.y, v1.z, v2.z, v3.z, v4.z, v1.t, v2.t, v3.t,
-				v4.t };
-		return new Matrix4x4(temp);
+		values = new double[16];
 	}
 
 	/**
@@ -79,24 +67,6 @@ public class Matrix4x4 {
 	}
 
 	/**
-	 * Adds {@code m1} and {@code m2} without altering them.
-	 * 
-	 * @param m1 the first matrix to be added
-	 * @param m2 the second matrix to be added
-	 * 
-	 * @return a new independent matrix
-	 */
-	public static Matrix4x4 add(Matrix4x4 m1, Matrix4x4 m2) {
-		double[] temp = new double[m1.values.length];
-
-		for (int i = 0; i < temp.length; i++) {
-			temp[i] = m1.values[i] + m2.values[i];
-		}
-
-		return new Matrix4x4(temp);
-	}
-
-	/**
 	 * Scales each value of this matrix by {@code d} without altering them.
 	 * 
 	 * @param d the factor to scale with
@@ -108,24 +78,6 @@ public class Matrix4x4 {
 
 		for (int i = 0; i < values.length; i++) {
 			temp[i] *= d;
-		}
-
-		return new Matrix4x4(temp);
-	}
-
-	/**
-	 * Scales {@code m} with {@code d}. {@code m} is not altered.
-	 * 
-	 * @param m the matrix to scale
-	 * @param d the factor to scale with
-	 * 
-	 * @return a new independent matrix
-	 */
-	public static Matrix4x4 scale(Matrix4x4 m, double d) {
-		double[] temp = new double[m.values.length];
-
-		for (int i = 0; i < m.values.length; i++) {
-			temp[i] = m.values[i] * d;
 		}
 
 		return new Matrix4x4(temp);
@@ -154,28 +106,6 @@ public class Matrix4x4 {
 	}
 
 	/**
-	 * Multiplies m1 times m2 without altering them.
-	 * 
-	 * @param m1 the first matrix
-	 * @param m2 the second matrix
-	 * 
-	 * @return a new independent matrix which is the product of m1 times m2
-	 */
-	public static Matrix4x4 mult(Matrix4x4 m1, Matrix4x4 m2) {
-		double[] temp = new double[m1.values.length];
-		Vector4[] m1Vecs = Vector4.getHorizontalVectors(m1);
-		Vector4[] m2Vecs = Vector4.getVerticalVectors(m2);
-
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				temp[i * 4 + j] = Vector4.dot(m1Vecs[i], m2Vecs[j]);
-			}
-		}
-
-		return new Matrix4x4(temp);
-	}
-
-	/**
 	 * Multiplies this matrix with v. This is actually a normal matrix
 	 * multiplication with a 4x1 matrix.
 	 * 
@@ -189,27 +119,7 @@ public class Matrix4x4 {
 		res.x = temp[0].dot(v);
 		res.y = temp[1].dot(v);
 		res.z = temp[2].dot(v);
-		res.t = temp[3].dot(v);
-
-		return res;
-	}
-
-	/**
-	 * Multiplies m with v. This is actually a normal matrix multiplication with a
-	 * 4x1 matrix.
-	 * 
-	 * @param m the matrix to multiply
-	 * @param v the vector to multiply
-	 * 
-	 * @return the resulting vector
-	 */
-	public static Vector4 mult(Matrix4x4 m, Vector4 v) {
-		Vector4 res = new Vector4();
-		Vector4[] temp = Vector4.getHorizontalVectors(m);
-		res.x = temp[0].dot(v);
-		res.y = temp[1].dot(v);
-		res.z = temp[2].dot(v);
-		res.t = temp[3].dot(v);
+		res.w = temp[3].dot(v);
 
 		return res;
 	}

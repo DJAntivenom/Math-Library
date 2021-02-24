@@ -6,12 +6,10 @@ package ch.elste.math;
  * 
  * @author Dillon Elste
  */
-public class Vector3 {
+public class Vector3 extends Vector {
 	public static final Vector3 X = new Vector3(1, 0, 0);
 	public static final Vector3 Y = new Vector3(0, 1, 0);
 	public static final Vector3 Z = new Vector3(0, 0, 1);
-
-	public double x, y, z;
 
 	/**
 	 * Creates a new vector based on the given one.
@@ -80,20 +78,6 @@ public class Vector3 {
 	}
 
 	/**
-	 * Adds {@code v1} to {@code v2} without altering them.
-	 * 
-	 * @param v1
-	 *            the first vector to be added
-	 * @param v2
-	 *            the second vector to be added
-	 * 
-	 * @return a new vector with the resulting values
-	 */
-	public static Vector3 add(final Vector3 v1, final Vector3 v2) {
-		return new Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
-	}
-
-	/**
 	 * Subtracts {@code v} from this and returns a new independent vector object
 	 * with the resulting values. {@code this} isn't changed.
 	 * 
@@ -107,38 +91,12 @@ public class Vector3 {
 	}
 
 	/**
-	 * Subtracts {@code v1} from {@code v2} without altering them.
-	 * 
-	 * @param v1
-	 *            the first vector to be subtracted
-	 * @param v2
-	 *            the second vector to be subtracted
-	 * 
-	 * @return a new vector with the resulting values
-	 */
-	public static Vector3 subtract(final Vector3 v1, final Vector3 v2) {
-		return new Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
-	}
-
-	/**
 	 * Returns -this.
 	 * 
 	 * @return -this
 	 */
 	public Vector3 negative() {
 		return new Vector3(-x, -y, -z);
-	}
-
-	/**
-	 * Returns -v.
-	 * 
-	 * @param v
-	 *            the vector to be negated
-	 * 
-	 * @return -v
-	 */
-	public static Vector3 negate(final Vector3 v) {
-		return new Vector3(-v.x, -v.y, -v.z);
 	}
 
 	/**
@@ -154,20 +112,6 @@ public class Vector3 {
 	}
 
 	/**
-	 * Scales {@code v} by {@code factor} without altering it.
-	 * 
-	 * @param v
-	 *            the vector to scale
-	 * @param factor
-	 *            the factor to scale by
-	 * 
-	 * @return a new independent vector
-	 */
-	public static Vector3 scale(final Vector3 v, final double factor) {
-		return new Vector3(v.x * factor, v.y * factor, v.z * factor);
-	}
-
-	/**
 	 * Calculates the dot product of this vector and {@code v}.
 	 * 
 	 * @param v
@@ -180,20 +124,6 @@ public class Vector3 {
 	}
 
 	/**
-	 * Calculates the dot product of the two given vectors.
-	 * 
-	 * @param v1
-	 *            the first vector to multiply
-	 * @param v2
-	 *            the second vector to multiply
-	 * 
-	 * @return the dot product as a double
-	 */
-	public static double dot(final Vector3 v1, final Vector3 v2) {
-		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-	}
-
-	/**
 	 * Calculates the cross product of this and the given vector.
 	 * 
 	 * @param v
@@ -203,20 +133,6 @@ public class Vector3 {
 	 */
 	public Vector3 cross(final Vector3 v) {
 		return new Vector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
-	}
-
-	/**
-	 * Calculates the cross product of the given vectors.
-	 * 
-	 * @param v1
-	 *            the first vector to multiply
-	 * @param v2
-	 *            the second vector to multiply
-	 * 
-	 * @return a new vector with resulting values
-	 */
-	public static Vector3 cross(final Vector3 v1, final Vector3 v2) {
-		return new Vector3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
 	}
 
 	/**
@@ -239,57 +155,8 @@ public class Vector3 {
 		return new Vector3(x / length, y / length, z / length);
 	}
 
-	/**
-	 * Returns the normalized version of {@code v} without altering it.
-	 * 
-	 * @param v
-	 *            the vector to get the normalized version of
-	 * 
-	 * @return a new normalized vector without altering v
-	 */
-	public static Vector3 getNormalized(final Vector3 v) {
-		double length = v.length();
-		return new Vector3(v.x / length, v.y / length, v.z / length);
-	}
-
 	@Override
 	public String toString() {
 		return String.format("Vector[%.3f,%.3f,%.3f]\t%s", x, y, z, super.toString());
-	}
-
-	/**
-	 * Returns the three horizontal vectors of {@code m}.
-	 * 
-	 * @param m
-	 *            the matrix to take the vectors from
-	 * 
-	 * @return the three horizontal vectors
-	 */
-	public static Vector3[] getHorizontalVectors(final Matrix3x3 m) {
-		Vector3[] temp = new Vector3[3];
-
-		for (int i = 0; i < 3; i++) {
-			temp[i] = new Vector3(m.values[i * 3], m.values[i * 3 + 1], m.values[i * 3 + 2]);
-		}
-
-		return temp;
-	}
-
-	/**
-	 * Returns the three vertical vectors of {@code m}.
-	 * 
-	 * @param m
-	 *            the matrix to take the vectors from
-	 * 
-	 * @return the three vertical vectors
-	 */
-	public static Vector3[] getVerticalVectors(final Matrix3x3 m) {
-		Vector3[] temp = new Vector3[3];
-
-		for (int i = 0; i < 3; i++) {
-			temp[i] = new Vector3(m.values[i], m.values[3 + i], m.values[6 + i]);
-		}
-
-		return temp;
 	}
 }
